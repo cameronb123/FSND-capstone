@@ -3,7 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 
+# Replace postgres with postgresql to enable app to work with SQLALchemy > 1.4
 database_path = os.environ['DATABASE_URL']
+
+if database_path.startswith("postgres://"):
+    database_path = database_path.replace("postgres://", "postgresql://", 1)
 
 db = SQLAlchemy()
 
