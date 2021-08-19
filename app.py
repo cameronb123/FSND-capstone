@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, json, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -46,8 +47,8 @@ def create_app(test_config=None):
     return jsonify({
       'success': True,
       'status': 200,
-      'movies': actor_list,
-      'total_movies': len(actors)
+      'actors': actor_list,
+      'total_actors': len(actors)
     })
 
   # DELETE endpoints
@@ -119,6 +120,10 @@ def create_app(test_config=None):
     # Get details of new movie from the request
     new_title = body.get('title', None)
     new_release = body.get('release', None)
+    try:
+      new_release = datetime.date.strftime(new_release, "%d/%m/%Y")
+    except:
+      abort(400)
 
     try:
       # Create new movie and insert into db
@@ -189,10 +194,15 @@ def create_app(test_config=None):
       # Get updated details from request
       new_title = body.get('title', None)
       new_release = body.get('release', None)
+      
       # Set new details to movie
       if new_title:
         movie.title = new_title
       if new_release:
+        try:
+          new_release = datetime.date.strftime(new_release, "%d/%m/%Y")
+        except:
+          abort(400)
         movie.release = new_release
       
       try:
