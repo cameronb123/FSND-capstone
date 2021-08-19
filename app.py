@@ -121,7 +121,8 @@ def create_app(test_config=None):
     new_title = body.get('title', None)
     new_release = body.get('release', None)
     try:
-      new_release = datetime.date.strftime(new_release, "%d/%m/%Y")
+      release_datetime = datetime.datetime.strptime(new_release, "%d/%m/%Y")
+      new_release = release_datetime.date()
     except:
       abort(400)
 
@@ -200,7 +201,8 @@ def create_app(test_config=None):
         movie.title = new_title
       if new_release:
         try:
-          new_release = datetime.date.strftime(new_release, "%d/%m/%Y")
+          release_datetime = datetime.datetime.strptime(new_release, "%d/%m/%Y")
+          new_release = release_datetime.date()
         except:
           abort(400)
         movie.release = new_release
