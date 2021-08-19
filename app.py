@@ -19,7 +19,7 @@ def create_app(test_config=None):
   def get_movies():
     # get movies from database
     movies = Movie.query.order_by(Movie.id).all()
-    return movies
+    return "Here are the movies"
 
   return app
 
