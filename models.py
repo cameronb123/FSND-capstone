@@ -38,11 +38,11 @@ class Movie(db.Model):
         self.title = title
         self.release = release
 
-    # def format(self):
-    #     return {
-    #     'id': self.id,
-    #     'name': self.name,
-    #     'catchphrase': self.catchphrase}
+    def format(self):
+        return {
+        'id': self.id,
+        'title': self.title,
+        'release': self.release}
 
 
 '''
@@ -61,3 +61,10 @@ class Actor(db.Model):
         self.name = name
         self.age = age
         self.gender = gender
+
+    def format(self):
+        return {
+        'id': self.id,
+        'name': self.name,
+        'age': self.age,
+        'gender': self.gender}

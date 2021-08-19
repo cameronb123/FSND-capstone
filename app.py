@@ -13,13 +13,85 @@ def create_app(test_config=None):
 
   @app.route('/')
   def home():
-    return "hello world"
+    return "Welcome to the Casting Agency app"
 
+  # GET endpoints
+  # Movies
   @app.route('/movies', methods=['GET'])
   def get_movies():
-    # get movies from database
+    #Query the database
     movies = Movie.query.order_by(Movie.id).all()
-    return "Here are the movies"
+    movie_list = [movie.format() for movie in movies]
+
+    if len(movies) == 0:
+      abort(404)
+    
+    return jsonify({
+      'success': True,
+      'movies': movie_list,
+      'total_movies': len(movies)
+    })
+
+  # Actors
+  @app.route('/actors', methods=['GET'])
+  def get_actors():
+    #Query the database
+    actors = Actor.query.order_by(Actor.id).all()
+    actor_list = [actor.format() for actor in actors]
+
+    if len(actors) == 0:
+      abort(404)
+    
+    return jsonify({
+      'success': True,
+      'movies': actor_list,
+      'total_movies': len(actors)
+    })
+
+  # DELETE endpoints
+
+  
+  # Error handlers
+  # 404
+  @app.errorhandler(400)
+  def bad_request(error):
+      return jsonify({
+          'success': False,
+          'error': 400,
+          'message': 'bad request'
+      }), 400
+
+  @app.errorhandler(404)
+  def not_found(error):
+      return jsonify({
+          'success': False,
+          'error': 404,
+          'message': 'resource not found'
+      }), 404
+
+  @app.errorhandler(405)
+  def not_allowed(error):
+      return jsonify({
+          'success': False,
+          'error': 405,
+          'message': 'method not allowed'
+      }), 405
+
+  @app.errorhandler(422)
+  def unprocessable(error):
+      return jsonify({
+          'success': False,
+          'error': 422,
+          'message': 'unprocessable entity'
+      }), 422
+
+  @app.errorhandler(500)
+  def internal_error(error):
+      return jsonify({
+          'success': False,
+          'error': 500,
+          'message': 'internal server error'
+      }), 500
 
   return app
 
