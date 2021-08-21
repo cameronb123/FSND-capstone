@@ -808,7 +808,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Fight Club\",\r\n    \"release\": \"12/11/1998\"\r\n}"
+							"raw": "{\r\n    \"title\": \"Fight Club\",\r\n    \"release\": \"12/11/1998\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/movies/1",
@@ -848,7 +853,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Angelina Jolie\",\r\n    \"age\": 47,\r\n    \"gender\": \"F\" \r\n}"
+							"raw": "{\r\n    \"name\": \"Angelina Jolie\",\r\n    \"age\": 47,\r\n    \"gender\": \"F\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/actors/1",
@@ -1055,7 +1065,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Se7en\",\r\n    \"release\": \"05/01/1996\"\r\n}"
+							"raw": "{\r\n    \"title\": \"Se7en\",\r\n    \"release\": \"05/01/1996\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/movies",
@@ -1094,7 +1109,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Morgan Freeman\",\r\n    \"age\": 84,\r\n    \"gender\": \"M \"\r\n}"
+							"raw": "{\r\n    \"name\": \"Morgan Freeman\",\r\n    \"age\": 84,\r\n    \"gender\": \"M \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/actors",
@@ -1133,7 +1153,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"release\": \"12/11/1999\"\r\n}"
+							"raw": "{\r\n    \"release\": \"12/11/1999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/movies/1",
@@ -1173,7 +1198,12 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"age\": 46\r\n}"
+							"raw": "{\r\n    \"age\": 46\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/actors/1",

@@ -226,7 +226,7 @@ def create_app(test_config=None):
         return jsonify({
           'success': True,
           'status': 200,
-          'updated_movie': movie.format()
+          'updated_movie': [movie.format()]
         })
       except:
         abort(422)
@@ -266,7 +266,7 @@ def create_app(test_config=None):
         return jsonify({
           'success': True,
           'status': 200,
-          'updated_actor': actor.format()
+          'updated_actor': [actor.format()]
         })
       except:
         abort(422)
