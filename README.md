@@ -12,6 +12,12 @@ The Casting Agency is a company that is responsible for creating movies and mana
 
 The application is hosted on Heroku, at the address https://capstone-cameron-barker.herokuapp.com. Users can interact with the application using a tool such as cURL or Postman, and the below endpoints.
 
+To obtain the JWT required for role-based access, users must login at https://capstone-cameron-barker.herokuapp.com/login. The accounts are:
+- Casting Assistant: assistant@cameroncasting.com
+- Casting Director: director@cameroncasting.com
+- Executive Producer: producer@cameroncasting.com
+The password for these accounts will be provided in the submission comments for the project.
+
 ### Endpoints
 
 ```js
@@ -221,10 +227,12 @@ The API will return five error types when requests fail:
 
 ## Testing
 
-The test scripts are stored in test_app.py, and use a connection to a local PostgreSQL database called agency_test, which can be populated using the test_database.psql file. To setup the database and perform the tests, run the following commands: 
+The endpoint test scripts are stored in test_app.py, and use a connection to a local PostgreSQL database called agency_test, which can be populated using the test_database.psql file. To setup the database and perform the tests, run the following commands: 
 ```
 dropdb agency_test
 createdb agency_test
 psql agency_test < test_database.psql
 python test_app.py
 ```
+
+RBAC testing can be performed using the casting-agency Postman collection. Please note that the JWTs will expire at approximately 18:30 UK time on Sunday 22nd August.
