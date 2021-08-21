@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import Flask, json, request, abort, jsonify
+from flask import Flask, json, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -16,6 +16,15 @@ def create_app(test_config=None):
   @app.route('/')
   def home():
     return "Welcome to the Casting Agency app"
+  
+  @app.route('/login')
+  def login_redirect():
+    return redirect('''
+      https://cameronb123.eu.auth0.com/authorize?audience=agency
+      &response_type=token
+      &client_id=bxqMoDrnTsGjbqY3a4UUx3uefsw3ccgU
+      &redirect_uri=https://capstone-cameron-barker.herokuapp.com/
+    ''')
 
   # GET endpoints
   # Movies
