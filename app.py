@@ -19,7 +19,7 @@ def create_app(test_config=None):
   
   @app.route('/login')
   def login_redirect():
-    return redirect('https://cameronb123.eu.auth0.com/authorize?audience=agency&response_type=token&client_id=bxqMoDrnTsGjbqY3a4UUx3uefsw3ccg&redirect_uri=https://capstone-cameron-barker.herokuapp.com/')
+    return redirect('https://cameronb123.eu.auth0.com/authorize?audience=agency&response_type=token&client_id=bxqMoDrnTsGjbqY3a4UUx3uefsw3ccgU&redirect_uri=https://capstone-cameron-barker.herokuapp.com/')
 
   # GET endpoints
   # Movies
