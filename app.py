@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from models import setup_db, Movie, Actor
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -19,7 +20,8 @@ def create_app(test_config=None):
   # GET endpoints
   # Movies
   @app.route('/movies', methods=['GET'])
-  def get_movies():
+  @requires_auth('get:movies')
+  def get_movies(jwt):
     #Query the database
     movies = Movie.query.order_by(Movie.id).all()
     movie_list = [movie.format() for movie in movies]
@@ -36,7 +38,8 @@ def create_app(test_config=None):
 
   # Actors
   @app.route('/actors', methods=['GET'])
-  def get_actors():
+  @requires_auth('get:actors')
+  def get_actors(jwt):
     #Query the database
     actors = Actor.query.order_by(Actor.id).all()
     actor_list = [actor.format() for actor in actors]
@@ -54,7 +57,8 @@ def create_app(test_config=None):
   # DELETE endpoints
   # Movies
   @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-  def delete_movie(movie_id):
+  @requires_auth('delete:movies')
+  def delete_movie(movie_id, jwt):
     # Check if movie exists in database
     movie = Movie.query\
       .filter(Movie.id == movie_id).one_or_none()
@@ -82,7 +86,8 @@ def create_app(test_config=None):
 
   # Actors
   @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-  def delete_actor(actor_id):
+  @requires_auth('delete:actors')
+  def delete_actor(actor_id, jwt):
     # Check if actor exists in database
     actor = Actor.query\
       .filter(Actor.id == actor_id).one_or_none()
@@ -111,7 +116,8 @@ def create_app(test_config=None):
   # POST endpoints
   # Movies
   @app.route('/movies', methods=['POST'])
-  def create_movie():
+  @requires_auth('post:movies')
+  def create_movie(jwt):
     body = request.get_json()
     # Handle error if request is empty
     if body == {}:
@@ -147,7 +153,8 @@ def create_app(test_config=None):
 
   # Actors
   @app.route('/actors', methods=['POST'])
-  def create_actor():
+  @requires_auth('post:actors')
+  def create_actor(jwt):
     body = request.get_json()
     # Handle error if request is empty
     if body == {}:
@@ -182,7 +189,8 @@ def create_app(test_config=None):
   # PATCH endpoints
   # Movies
   @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-  def update_movie(movie_id):
+  @requires_auth('patch:movies')
+  def update_movie(movie_id, jwt):
     # Get movie from database
     movie = Movie.query\
       .filter(Movie.id == movie_id).one_or_none()
@@ -224,7 +232,8 @@ def create_app(test_config=None):
 
   # Actors
   @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-  def update_actor(actor_id):
+  @requires_auth('patch:actors')
+  def update_actor(actor_id, jwt):
     # Get actor from database
     actor = Actor.query\
       .filter(Actor.id == actor_id).one_or_none()
@@ -302,6 +311,15 @@ def create_app(test_config=None):
           'status': 500,
           'message': 'internal server error'
       }), 500
+    
+  @app.errorhandler(AuthError)
+  def auth_error(error):
+      print(error)
+      return jsonify({
+          "success": False,
+          "error": error.status_code,
+          "message": error.error
+      }), error.status_code
 
   return app
 

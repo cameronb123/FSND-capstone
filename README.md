@@ -59,7 +59,7 @@ GET '/actors'
 DELETE '/movies/${id}'
 - Deletes a specified movie using the id of the movie
 - Request Arguments: id - integer
-- Minimum permission required: Casting Director
+- Minimum permission required: Executive Producer
 - Returns: A success message and status, the id of the deleted movie, an object with the remaining movies, and the new total number of movies
 {
     'success': true,
@@ -134,7 +134,7 @@ POST '/actors'
     'gender': 'F'
 }
     - Note: Gender is a single character ('M'(ale)/'F'(emale)/'O'(ther))
-- Minimum permission required: Executive Producer
+- Minimum permission required: Casting Director
 - Returns: a success message and status, the id of the new actor, an object with the list of actors, and the new total number of actors
 {
     'success': true,
@@ -161,6 +161,7 @@ PATCH '/movies/${id}'
     'release':  '08/03/2019'
 }
     - Note: Release date must be of the form 'DD/MM/YYYY'
+- Minimum permission required: Casting Director
 - Returns: a success message and status, and an object with the updated movie details
 {
     'success': true,
@@ -185,6 +186,7 @@ PATCH '/actors/${id}'
     'gender': 'F'
 }
     - Note: Gender is a single character ('M'(ale)/'F'(emale)/'O'(ther))
+- Minimum permission required: Casting Director
 - Returns: a success message and status, and an object with the updated actor details
 {
     'success': true,
