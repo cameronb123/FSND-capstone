@@ -185,7 +185,7 @@ def create_app(test_config=None):
   def update_movie(movie_id):
     # Get movie from database
     movie = Movie.query\
-      .filter_by(Movie.id == movie_id).one_or_none()
+      .filter(Movie.id == movie_id).one_or_none()
 
     if movie:
       body = request.get_json()
@@ -227,7 +227,7 @@ def create_app(test_config=None):
   def update_actor(actor_id):
     # Get actor from database
     actor = Actor.query\
-      .filter_by(Actor.id == actor_id).one_or_none()
+      .filter(Actor.id == actor_id).one_or_none()
 
     if actor:
       body = request.get_json()
