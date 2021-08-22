@@ -25,7 +25,7 @@ GET '/movies'
 - Fetches the set of movies on the database
 - Request Arguments: None
 - Minimum permission required: Casting Assistant
-- Returns: A success message and status, an object of movies, and the total number of categories.
+- Returns: A success message and status, an object of movies, and the total number of movies.
 {
     'success': True,
     'status': 200,
