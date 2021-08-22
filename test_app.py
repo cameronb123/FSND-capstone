@@ -8,18 +8,20 @@ from models import setup_db, Movie, Actor
 
 
 class AgencyTestCase(unittest.TestCase):
-    """This class represents the trivia test case"""
 
     def setUp(self):
-        """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-
+        # Use Executive Producer token to enable all tests
+        self.header = {
+            "Authorization": "Bearer {}".format(os.environ['TOKEN'])
+        }
 
         self.database_name = "agency_test"
-        self.database_path = "postgresql://{}/{}".format('localhost:5432', self.database_name)
+        self.database_path = "postgresql://{}/{}".format(
+            'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
-        
+
         # Define a new movie for testing the create movie endpoint
         self.new_movie = {
             'title': 'Captain America: Civil War',
@@ -32,7 +34,7 @@ class AgencyTestCase(unittest.TestCase):
             'age': 50,
             'gender': 'M'
         }
-        
+
         # Updated movie details for testing the update endpoint
         self.update_movie = {
             'title': 'Avengers Assemble'
@@ -50,16 +52,15 @@ class AgencyTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
-    
+
     def tearDown(self):
         """Executed after reach test"""
         pass
 
-
     # Test /movies GET
     # Successful operation
     def test_get_movies(self):
-        res = self.client().get('/movies')
+        res = self.client().get('/movies', headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -74,7 +75,7 @@ class AgencyTestCase(unittest.TestCase):
         This scenario will only work for a database with no movies
         it has therefore been commented out to avoid showing as a failed test
         """
-    #     res = self.client().get('/movies')
+    #     res = self.client().get('/movies', headers=self.header)
     #     data = json.loads(res.data)
 
     #     self.assertEqual(res.status_code, 404)
@@ -84,13 +85,13 @@ class AgencyTestCase(unittest.TestCase):
     # Test /actors GET
     # Successful operation
     def test_get_actors(self):
-        res = self.client().get('/actors')
+        res = self.client().get('/actors', headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_actors'])
-        self.assertTrue(len(data['actors']))  
+        self.assertTrue(len(data['actors']))
 
     # No actors
     def test_404_get_actors(self):
@@ -99,7 +100,7 @@ class AgencyTestCase(unittest.TestCase):
         This scenario will only work for a database with no actors
         it has therefore been commented out to avoid showing as a failed test
         """
-    #     res = self.client().get('/actors')
+    #     res = self.client().get('/actors', headers=self.header)
     #     data = json.loads(res.data)
 
     #     self.assertEqual(res.status_code, 404)
@@ -109,7 +110,7 @@ class AgencyTestCase(unittest.TestCase):
     # Test /movies DELETE
     # Successful operation
     def test_delete_movie(self):
-        res = self.client().delete('/movies/2')
+        res = self.client().delete('/movies/2', headers=self.header)
         data = json.loads(res.data)
 
         movie = Movie.query.filter(Movie.id == 2).one_or_none()
@@ -123,7 +124,7 @@ class AgencyTestCase(unittest.TestCase):
 
     # Movie doesn't exist
     def test_404_delete_movie_does_not_exist(self):
-        res = self.client().delete('/movies/10000')
+        res = self.client().delete('/movies/10000', headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -133,7 +134,7 @@ class AgencyTestCase(unittest.TestCase):
     # Test /actors DELETE
     # Successful operation
     def test_delete_actor(self):
-        res = self.client().delete('/actors/2')
+        res = self.client().delete('/actors/2', headers=self.header)
         data = json.loads(res.data)
 
         actor = Actor.query.filter(Actor.id == 2).one_or_none()
@@ -147,17 +148,19 @@ class AgencyTestCase(unittest.TestCase):
 
     # Actor doesn't exist
     def test_404_delete_actor_does_not_exist(self):
-        res = self.client().delete('/actors/10000')
+        res = self.client().delete('/actors/10000', headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
-    
+
     # Test /movies POST
     # Successful operation
     def test_create_movie(self):
-        res = self.client().post('/movies', json=self.new_movie)
+        res = self.client().post('/movies',
+                                 json=self.new_movie,
+                                 headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -165,10 +168,10 @@ class AgencyTestCase(unittest.TestCase):
         self.assertTrue(data['created_movie'])
         self.assertTrue(data['total_movies'])
         self.assertTrue(len(data['movies']))
-    
+
     # Create without any data
     def test_400_create_movie_no_data(self):
-        res = self.client().post('/movies', json={})
+        res = self.client().post('/movies', json={}, headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
@@ -178,7 +181,9 @@ class AgencyTestCase(unittest.TestCase):
     # Test /actors POST
     # Successful operation
     def test_create_actor(self):
-        res = self.client().post('/actors', json=self.new_actor)
+        res = self.client().post('/actors',
+                                 json=self.new_actor,
+                                 headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -186,10 +191,10 @@ class AgencyTestCase(unittest.TestCase):
         self.assertTrue(data['created_actor'])
         self.assertTrue(data['total_actors'])
         self.assertTrue(len(data['actors']))
-    
+
     # Create without any data
     def test_400_create_actor_no_data(self):
-        res = self.client().post('/actors', json={})
+        res = self.client().post('/actors', json={}, headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
@@ -199,16 +204,18 @@ class AgencyTestCase(unittest.TestCase):
     # Test /movies PATCH
     # Successful operation
     def test_patch_movie(self):
-        res = self.client().patch('/movies/1', json=self.update_movie)
+        res = self.client().patch('/movies/1',
+                                  json=self.update_movie,
+                                  headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['updated_movie'])
-    
+
     # Update without any data
     def test_400_update_movie_no_data(self):
-        res = self.client().patch('/movies/1', json={})
+        res = self.client().patch('/movies/1', json={}, headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
@@ -217,7 +224,9 @@ class AgencyTestCase(unittest.TestCase):
 
     # Movie doesn't exist
     def test_404_update_movie_does_not_exist(self):
-        res = self.client().patch('/movies/10000', json=self.update_movie)
+        res = self.client().patch('/movies/10000',
+                                  json=self.update_movie,
+                                  headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -227,7 +236,9 @@ class AgencyTestCase(unittest.TestCase):
     # Test /actors PATCH
     # Successful operation
     def test_patch_actor(self):
-        res = self.client().patch('/actors/1', json=self.update_actor)
+        res = self.client().patch('/actors/1',
+                                  json=self.update_actor,
+                                  headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -236,23 +247,25 @@ class AgencyTestCase(unittest.TestCase):
 
     # Update without any data
     def test_400_update_actor_no_data(self):
-        res = self.client().patch('/actors/1', json={})
+        res = self.client().patch('/actors/1', json={}, headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
-    
+
     # Actor doesn't exist
     def test_404_update_actor_does_not_exist(self):
-        res = self.client().patch('/actors/10000', json=self.update_actor)
+        res = self.client().patch('/actors/10000',
+                                  json=self.update_actor,
+                                  headers=self.header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-    
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

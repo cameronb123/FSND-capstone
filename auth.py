@@ -44,7 +44,7 @@ def get_token_auth_header():
     elif len(parts) > 2:
         raise AuthError(
             'Invalid header: authorization header must be bearer token', 401
-            )
+        )
     else:
         # Return token part of header
         return parts[1]
@@ -96,12 +96,12 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError(
                 'Incorrect claims. Please check the audience and issuer.', 401
-                )
+            )
 
         except Exception:
             raise AuthError(
                 'Invalid header: unable to parse authentication token', 400
-                )
+            )
 
     raise AuthError('Invalid header: unable to find the appropriate key', 400)
 

@@ -234,5 +234,6 @@ createdb agency_test
 psql agency_test < test_database.psql
 python test_app.py
 ```
+Note that these tests also require setup of environment variables, which can be done by running `source setup.sh`.
 
-RBAC testing can be performed using the casting-agency Postman collection. Please note that the JWTs will expire at approximately 18:30 UK time on Sunday 22nd August.
+RBAC testing can be performed using the casting-agency Postman collection. Please note that the JWTs will expire at approximately 09:30 UK time on Monday 23rd August.
